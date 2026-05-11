@@ -1839,12 +1839,28 @@ csv,
 
 if ('serviceWorker' in navigator) {
 
+window.addEventListener('load', () => {
+
 navigator.serviceWorker
-.register('service-worker.js')
+.register('./service-worker.js')
 
-.then(() => {
+.then((reg) => {
 
-console.log('PWA ativo');
+console.log(
+'Service Worker registrado',
+reg
+);
+
+})
+
+.catch((err) => {
+
+console.log(
+'Erro Service Worker',
+err
+);
+
+});
 
 });
 
