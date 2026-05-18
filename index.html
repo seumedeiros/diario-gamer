@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff0000">
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width,initial-scale=1">
 
-<title>
-Diário de Jogos Zerados
-</title>
+<link rel="manifest"
+href="manifest.json">
+
+<meta name="theme-color"
+content="#ff0000">
+
+<title>Gaming Journal</title>
 
 <style>
 
@@ -122,23 +126,137 @@ padding:10px 20px;
 width:auto;
 }
 
+#languageModal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:99999;
+}
+
+.langBox{
+background:#222;
+padding:30px;
+border-radius:20px;
+width:90%;
+max-width:400px;
+text-align:center;
+}
+
+.langBtn{
+font-size:20px;
+padding:15px;
+margin-top:15px;
+}
+
+#tutorialModal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.95);
+z-index:999999;
+overflow:auto;
+padding:20px;
+box-sizing:border-box;
+}
+
+.tutorialBox{
+background:#222;
+max-width:900px;
+margin:auto;
+padding:25px;
+border-radius:20px;
+}
+
+.tutorialBox h2{
+color:red;
+text-align:center;
+}
+
+.tutorialBox h3{
+margin-top:25px;
+color:#ff6666;
+}
+
+.tutorialClose{
+position:fixed;
+top:15px;
+right:15px;
+background:red;
+color:white;
+border:none;
+padding:12px 18px;
+font-size:22px;
+border-radius:10px;
+width:auto;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>
-🎮 Diário de Jogos Zerados
+<div id="languageModal">
+
+<div class="langBox">
+
+<h2>
+Choose Language
+<br>
+Escolha Idioma
+</h2>
+
+<button
+class="langBtn"
+onclick="setLanguage('pt')">
+
+🇧🇷 Português
+
+</button>
+
+<button
+class="langBtn"
+onclick="setLanguage('en')">
+
+🇺🇸 English
+
+</button>
+
+</div>
+
+</div>
+
+<h1 id="tituloApp">
+🎮 Diário Gamer
 </h1>
 
-
 <div class="box">
+
+<select id="idiomaSelect"
+onchange="trocarIdioma(this.value)">
+
+<option value="pt">
+🇧🇷 Português
+</option>
+
+<option value="en">
+🇺🇸 English
+</option>
+
+</select>
 
 <input
 id="nome"
 placeholder="Nome do jogo">
-
 
 <select id="plataforma">
 
@@ -161,16 +279,14 @@ placeholder="Nome do jogo">
 <option>Android</option>
 
 <option>
-Outro (digitar manualmente)
+Outro / Other
 </option>
 
 </select>
 
-
 <input
 id="plataformaExtra"
 placeholder="Se escolheu Outro, digite aqui">
-
 
 <select id="status">
 
@@ -180,35 +296,31 @@ placeholder="Se escolheu Outro, digite aqui">
 
 </select>
 
-
 <input
 id="ano"
 placeholder="Ano">
 
-
 <select id="dificuldade">
 
 <option>Easy</option>
-<option>Médio</option>
+<option>Médio / Medium</option>
 <option>Hard</option>
 <option>Expert</option>
-<option>Impossível</option>
+<option>Impossível / Impossible</option>
 
 </select>
 
-
 <select id="gostei">
 
-<option>Gostei</option>
+<option>Gostei / Liked</option>
 
 <option>
-Não gostei
+Não gostei / Didn't like
 </option>
 
 </select>
 
-
-<label>
+<label id="labelNota">
 Nota do jogo:
 </label>
 
@@ -231,8 +343,7 @@ Sem nota
 
 </select>
 
-
-<label>
+<label id="labelManual">
 Adicionar tempo MANUAL
 </label>
 
@@ -246,8 +357,7 @@ id="manualMinutos"
 type="number"
 placeholder="Minutos">
 
-
-<label>
+<label id="labelReview">
 Observação / Review:
 </label>
 
@@ -257,8 +367,7 @@ style="height:120px"
 placeholder="Escreva seu review...">
 </textarea>
 
-
-<label>
+<label id="labelPrint">
 Print do jogo:
 </label>
 
@@ -266,7 +375,6 @@ Print do jogo:
 type="file"
 id="foto"
 accept="image/*">
-
 
 <button
 id="btnSalvar"
@@ -276,14 +384,13 @@ Adicionar Jogo
 
 </button>
 
-
 <button
+id="btnBackup"
 onclick="exportarBackup()">
 
 Exportar Backup JSON
 
 </button>
-
 
 <input
 type="file"
@@ -291,17 +398,23 @@ id="importarBackup"
 accept=".json"
 onchange="importarBackup(event)">
 
-
 <button
+id="btnExcel"
 onclick="exportarCSV()">
 
 Exportar Excel (.csv)
 
 </button>
 
+<button
+id="btnTutorial"
+onclick="abrirTutorial()">
+
+❓ Como usar
+
+</button>
+
 </div>
-
-
 
 <div class="box toolbar">
 
@@ -327,8 +440,6 @@ Ano
 
 </select>
 
-
-
 <select
 id="filtrarConsole"
 onchange="mostrar()">
@@ -340,8 +451,6 @@ Todos
 </select>
 
 </div>
-
-
 
 <div class="box">
 
@@ -355,8 +464,6 @@ Plataformas usadas: 0
 
 </div>
 
-
-
 <table>
 
 <thead>
@@ -364,33 +471,19 @@ Plataformas usadas: 0
 <tr>
 
 <th>Plataforma</th>
-
 <th>Jogo</th>
-
 <th>Status</th>
-
 <th>Ano</th>
-
 <th>Dificuldade</th>
-
 <th>Gostei</th>
-
 <th>Nota</th>
-
 <th>Review</th>
-
 <th>Tempo</th>
-
 <th>Início</th>
-
 <th>Fim</th>
-
 <th>Sessão</th>
-
 <th>Print</th>
-
 <th>Editar</th>
-
 <th>Excluir</th>
 
 </tr>
@@ -403,7 +496,118 @@ Plataformas usadas: 0
 
 </table>
 
+<div id="tutorialModal">
 
+<button
+class="tutorialClose"
+onclick="fecharTutorial()">
+
+X
+
+</button>
+
+<div class="tutorialBox">
+
+<h2>
+🎮 Como usar o app
+</h2>
+
+<h3>
+➕ Adicionar jogo
+</h3>
+
+<p>
+Digite o nome do jogo,
+escolha plataforma,
+status,
+dificuldade
+e clique em
+“Adicionar Jogo”.
+</p>
+
+<h3>
+🕹 Tempo real
+</h3>
+
+<p>
+Use o botão ▶ Jogar
+para iniciar uma sessão.
+
+Quando parar de jogar,
+clique em ⏹ Parar.
+
+O app soma automaticamente
+o tempo jogado.
+</p>
+
+<h3>
+✏ Tempo manual
+</h3>
+
+<p>
+Você pode adicionar horas
+manualmente.
+
+O app marca esse tempo
+em dourado para diferenciar
+do tempo registrado em tempo real.
+</p>
+
+<h3>
+📸 Prints
+</h3>
+
+<p>
+Você pode adicionar screenshots
+ou fotos dos jogos.
+
+Toque na imagem para ampliar.
+</p>
+
+<h3>
+📝 Reviews
+</h3>
+
+<p>
+Escreva análises,
+comentários
+e observações pessoais
+sobre os jogos.
+</p>
+
+<h3>
+💾 Backup
+</h3>
+
+<p>
+Exporte backups JSON regularmente.
+
+Isso protege seus dados
+caso troque de celular.
+</p>
+
+<h3>
+📊 Exportar CSV
+</h3>
+
+<p>
+Exporta sua lista
+para Excel ou Planilhas.
+</p>
+
+<h3>
+🌎 Idioma
+</h3>
+
+<p>
+Você pode alternar
+entre Português e English
+no topo do aplicativo.
+</p>
+
+</div>
+
+</div>
 
 <div id="visorImagem">
 
@@ -420,6 +624,138 @@ X
 </div>
 
 <script>
+
+let lang =
+localStorage.getItem(
+"appLanguage"
+) || null;
+
+function setLanguage(l){
+
+lang=l;
+
+localStorage.setItem(
+"appLanguage",
+l
+);
+
+document.getElementById(
+"languageModal"
+).style.display="none";
+
+trocarIdioma(l);
+
+}
+
+function trocarIdioma(l){
+
+lang=l;
+
+localStorage.setItem(
+"appLanguage",
+l
+);
+
+if(l=="en"){
+
+document.getElementById(
+"tituloApp"
+).innerText=
+"🎮 Gaming Journal";
+
+document.getElementById(
+"nome"
+).placeholder=
+"Game name";
+
+document.getElementById(
+"plataformaExtra"
+).placeholder=
+"If Other, type here";
+
+document.getElementById(
+"ano"
+).placeholder=
+"Year";
+
+document.getElementById(
+"labelNota"
+).innerText=
+"Game score:";
+
+document.getElementById(
+"labelManual"
+).innerText=
+"Add MANUAL time";
+
+document.getElementById(
+"manualHoras"
+).placeholder=
+"Hours";
+
+document.getElementById(
+"manualMinutos"
+).placeholder=
+"Minutes";
+
+document.getElementById(
+"labelReview"
+).innerText=
+"Review / Notes:";
+
+document.getElementById(
+"labelPrint"
+).innerText=
+"Game screenshot:";
+
+document.getElementById(
+"btnSalvar"
+).innerText=
+"Add Game";
+
+document.getElementById(
+"btnBackup"
+).innerText=
+"Export JSON Backup";
+
+document.getElementById(
+"btnExcel"
+).innerText=
+"Export Excel (.csv)";
+
+document.getElementById(
+"btnTutorial"
+).innerText=
+"❓ How to use";
+
+}
+
+else{
+
+document.getElementById(
+"tituloApp"
+).innerText=
+"🎮 Diário Gamer";
+
+}
+
+}
+
+if(lang){
+
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+document.getElementById(
+"languageModal"
+).style.display="none";
+
+trocarIdioma(lang);
+
+});
+
+}
 
 let db;
 
@@ -1834,6 +2170,22 @@ csv,
 );
 
 };
+
+}
+
+function abrirTutorial(){
+
+document.getElementById(
+'tutorialModal'
+).style.display='block';
+
+}
+
+function fecharTutorial(){
+
+document.getElementById(
+'tutorialModal'
+).style.display='none';
 
 }
 
