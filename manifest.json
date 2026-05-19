@@ -1,7 +1,7 @@
 {
-  "name": "Diário Gamer",
-  "short_name": "Diário",
-  "description": "Programa feito para organizar sua jogatinas catalogar o que está jogando é contar o tempo de cada jogo",
+  "name": "Diário Gamer 1.0.3",
+  "short_name": "GamingJournal ",
+  "description": "Jogar guardando todas suas experiências é bem melhor ",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#111111",
