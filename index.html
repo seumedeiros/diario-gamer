@@ -1042,23 +1042,90 @@ document.getElementById(
 ).files[0];
 
 
-
 if(arquivo){
 
-let leitor=
+let leitor =
 new FileReader();
 
+leitor.onload = function(e){
 
-leitor.onload=function(e){
+let img = new Image();
 
-obj.foto=
-e.target.result;
+img.onload = function(){
+
+let canvas =
+document.createElement(
+'canvas'
+);
+
+let ctx =
+canvas.getContext(
+'2d'
+);
+
+let largura =
+img.width;
+
+let altura =
+img.height;
+
+let proporcao =
+largura / altura;
+
+
+
+if(proporcao > 1.4){
+
+canvas.width = 640;
+canvas.height = 360;
+
+}
+
+else{
+
+canvas.width = 640;
+canvas.height = 480;
+
+}
+
+
+
+ctx.drawImage(
+
+img,
+
+0,
+0,
+
+canvas.width,
+canvas.height
+
+);
+
+
+
+obj.foto =
+
+canvas.toDataURL(
+'image/jpeg',
+0.7
+);
+
+
 
 salvarOuAtualizar(
 obj
 );
 
 };
+
+
+
+img.src =
+e.target.result;
+
+};
+
 
 
 leitor.readAsDataURL(
