@@ -1,7 +1,7 @@
 {
-  "name": "Diário Gamer 1.0.3",
-  "short_name": "GamingJournal ",
-  "description": "Jogar guardando todas suas experiências é bem melhor ",
+  "name": "Diário Gamer ",
+  "short_name": "GamingJournal",
+  "description": "Seus registros de jogos guardados facilmente",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#111111",

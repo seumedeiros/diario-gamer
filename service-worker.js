@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "diariogamer103-v1-0-3";
+const CACHE_NAME = "diariogamer-v1-0-4";
 
 const urlsToCache = [
 "./",

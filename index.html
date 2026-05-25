@@ -13,7 +13,7 @@ href="manifest.json">
 <meta name="theme-color"
 content="#ff0000">
 
-<title>Gaming Journal</title>
+<title>Gaming Journal 1.0.4</title>
 
 <style>
 
@@ -94,6 +94,30 @@ padding:8px 14px;
 color:gold;
 font-style:italic;
 font-weight:bold;
+}
+
+.status-jogando{
+background:#c99700 !important;
+color:#fff;
+font-weight:bold;
+border-radius:8px;
+padding:6px;
+}
+
+.status-zerado{
+background:#0f9d58 !important;
+color:#fff;
+font-weight:bold;
+border-radius:8px;
+padding:6px;
+}
+
+.status-100{
+background:#2962ff !important;
+color:#fff;
+font-weight:bold;
+border-radius:8px;
+padding:6px;
 }
 
 #visorImagem{
@@ -1764,7 +1788,32 @@ html +=
 
 +'<td>'+j.nome+'</td>'
 
-+'<td>'+j.status+'</td>'
++'<td>'+
+
+(
+j.status=='Jogando'
+
+?
+
+'<div class="status-jogando">🎮 '+j.status+'</div>'
+
+:
+
+j.status=='Zerado'
+
+?
+
+'<div class="status-zerado">✔ '+j.status+'</div>'
+
+:
+
+'<div class="status-100">🏆 '+j.status+'</div>'
+
+)
+
++
+
+'</td>'
 
 +'<td>'+j.ano+'</td>'
 
