@@ -459,6 +459,13 @@ onclick="abrirTutorial()">
 
 </button>
 
+<button
+onclick="forcarAtualizacao()">
+
+🔄 Atualizar aplicativo
+
+</button>
+
 </div>
 
 <div class="box toolbar">
@@ -2339,6 +2346,60 @@ csv,
 
 }
 
+async function forcarAtualizacao(){
+
+if(
+'serviceWorker'
+in navigator
+){
+
+let registros =
+
+await navigator
+.serviceWorker
+.getRegistrations();
+
+
+
+for(
+let reg of registros
+){
+
+await reg.unregister();
+
+}
+
+
+
+let keys =
+await caches.keys();
+
+
+
+for(
+let key of keys
+){
+
+await caches.delete(key);
+
+}
+
+}
+
+
+
+alert(
+
+'Cache limpo! O aplicativo irá atualizar.'
+
+);
+
+
+
+location.reload(true);
+
+}
+
 function abrirTutorial(){
 
 document.getElementById(
@@ -2368,6 +2429,44 @@ console.log(
 'Service Worker registrado',
 reg
 );
+
+reg.addEventListener(
+'updatefound',
+() => {
+
+let novoWorker =
+reg.installing;
+
+novoWorker.addEventListener(
+'statechange',
+() => {
+
+if(
+
+novoWorker.state ===
+'installed'
+
+&&
+
+navigator.serviceWorker.controller
+
+){
+
+let confirmar = confirm(
+'Nova versão encontrada! Deseja atualizar agora?'
+);
+
+if(confirmar){
+
+forcarAtualizacao();
+
+}
+
+}
+
+});
+
+});
 
 })
 
